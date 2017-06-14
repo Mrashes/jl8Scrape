@@ -12,15 +12,18 @@ def make_soup(url):
 def get_images(url):
 	soup = make_soup(url)
 	#this makes a list of bs4 element tags
-	images = [img for img in soup.findAll('img')]
-	print (str(len(images)) + "images found.")
+	links = [a for a in soup.findAll('a')]
+	print (str(len(links)) + "images found.")
 	print 'Downloading images to current working directory.'
 	#compile our unicode list of image links
-	image_links = [each.get('src') for each in images]
+	image_links = [each.get('href') for each in links]
 	for each in image_links:
-		filename=each.split('/')[-1]
+		filename="http://limbero.org/jl8/comics/" + each[-1]
 		urllib.urlretrieve(each, filename)
+		
 	return image_links
+
+	# I need to find a way to skip the first couple of links as they aren't images
 
 #a standard call looks like this
 #get_images('http://www.wookmark.com')
